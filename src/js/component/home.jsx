@@ -5,7 +5,7 @@ import rigoImage from "../../img/rigo-baby.jpg";
 
 //create your first component
 const Home = () => {
-	const [tarea, setTarea]=useState(""); //dato string
+	const [tarea, setTarea]= useState(""); //dato string
 	const [todos, setTodos] = useState([]); //dato array
 	
 	//esta función es para traer los datos que tenemos en el array en nuestro servidor
@@ -19,6 +19,7 @@ const Home = () => {
 		.then((response) => response.json()) //lo transformamos a json
       	.then((data) => setTodos(data)); // lo guardamos en un objeto {}
 	}
+	// console.log(traertarea());
 	//Podemos ver en la consola el array cuando cargamos
 	
 	//función asociada a evento, para agregar la nueva tarea del array al darle enter en el keydown
@@ -60,11 +61,15 @@ const Home = () => {
 
 	//función de eliminación de tarea cuando usuario escoja
 	const borrarTarea = (index) => {
-		//filtramos el setTodos, y usamos prevState para ver estado previo de todos que queremos cambiar
-		setTodos((prevState) =>
-		prevState.filter((item, indexFiltered) => indexFiltered !== index)
-		);
-		console.log(index);
+		//creo variable para guardar lo que filtro de todos
+		let nuevotodos = todos.filter((item, indexFiltered) => {
+			//hago condicional para usar .filter y que me meta en la variable los valores de index filtrado vs index que me mandan como argumento que sean iguales
+			if(indexFiltered !== index) {
+				return item;
+			}
+			});
+		//seteo el todos con el array nuevo que tengo donde no tengo los valores que borre	
+		setTodos(nuevotodos);
 	};
 
 	return (
@@ -77,7 +82,7 @@ const Home = () => {
 					placeholder="Agrega una tarea a tu lista..."
 					onChange={(e)=>setTarea(e.target.value)}
 					onKeyDown={agregartarea}
-					value={tarea}
+					value={tarea} 
 					/>
 				</form>
 			<div className="container col-6 text-center">
